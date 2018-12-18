@@ -1,0 +1,172 @@
+-- 登陆命令
+	mysql (-h连接的主机ip -P端口3306) -u用户名 -p密码
+	
+-- 修改用户权限
+	Grant all privileges on *.* to '用户'@'IP' identified by '密码' with grant option;
+	Grant all privileges on 表名.* to '用户'@'IP' identified by '密码'；
+	都需要flush privileges;
+	*.* : 代表所有数据库以及所有表
+	all privileges或者all : 代表所有权限,也可以指定权限
+	
+	样例:
+	Grant SELECT,INSERT,UPDATE,REFERENCES,DELETE,CREATE,DROP,ALTER,INDEX,TRIGGER,CREATE VIEW,SHOW VIEW,EXECUTE,ALTER ROUTINE,CREATE ROUTINE,CREATE TEMPORARY TABLES,LOCK TABLES,EVENT ON `数据库`.* TO '用户'@'IP';
+	
+-- 数据库分类
+DDL(数据定义问题)
+	数据定义语言 - Data Definition Language
+	用来定义数据库的对象，如数据表、视图、索引等
+DML(数据操作问题)
+	数据处理语言 - Data Manipulation Language
+	在数据库表中更新，增加和删除记录
+	如 update， insert， delete
+DQL(数据查询问题)
+	数据查询语言 – Data Query Language
+	select （学习的重点）
+DCL(数据控制问题)
+	数据控制语言 – Data Control Language
+	指用于设置用户权限和控制事务语句
+	如grant，revoke，if…else，while，begin transaction
+	
+-- 创建函数出现1418错误, 解决方案
+	SET GLOBAL log_bin_trust_function_creators = 1;// root权限执行语句
+
+-- 创建索引(ALTER TABLE用来创建普通索引、UNIQUE索引或PRIMARY KEY索引)
+	ALTER TABLE 表名 ADD INDEX 索引名 (字段1, 字段2....)
+	ALTER TABLE 表名 ADD UNIQUE (字段1, 字段2....)
+	ALTER TABLE 表名 ADD PRIMARY KEY (字段1, 字段2....)
+-- 创建索引(CREATE INDEX可对表增加普通索引或UNIQUE索引。)
+	CREATE UNIQUE INDEX 索引名 ON 表名 (字段1, 字段2....)
+	CREATE INDEX 索引名 ON 表名 (字段1, 字段2....)
+		1) CREATE INDEX 索引名 ON 表名(字段);					单索引	
+		2) CREATE INDEX 索引名 ON 表名(字段1, 字段2....);		组合索引
+-- 删除索引
+	DROP INDEX 索引名 ON 表名
+	ALTER TABLE 表名 DROP INDEX 索引名
+	ALTER TABLE 表名 DROP PRIMARY KEY
+-- 查看索引
+	show index from 表名;
+	show keys from 表名;
+	
+-- Linux下的MySQL配置默认在 /etc/my.cnf
+[client]
+default-character-set=utf8
+
+[mysqld]	
+default-character-set=utf8
+character-set-server=utf8
+default-storage-engine=INNODB
+	-- 查看默认引擎 show engines;
+	-- 查看编码状态	status;
+	-- 重启MySQL服务 service mysqld restart
+	
+-- Linux下修改用户密码
+	/etc/init.d/mysql stop   (service mysqld stop)
+	/usr/bin/mysqld_safe --skip-grant-tables
+	另外开个SSH连接
+	[root@localhost ~]# mysql
+	mysql>use mysql
+	mysql>update user set password=password("123456") where user="root";
+	mysql>flush privileges;
+	mysql>exit
+
+	然后
+	[mysql@localhost etc]$ ps -A | grep mysql
+	4532 pts/0    00:00:00 mysqld_safe
+	5542 pts/0    00:00:00 mysqld
+	[mysql@localhost etc]$ kill -9 4532 5542 
+	正常启动 MySQL：/etc/init.d/mysql start   (service mysqld start)
+
+-- DATE_FORMAT(date,format) 格式
+	%a	缩写星期名
+	%b	缩写月名
+	%c	月，数值
+	%D	带有英文前缀的月中的天
+	%d	月的天，数值(00-31)
+	%e	月的天，数值(0-31)
+	%f	微秒
+	%H	小时 (00-23)
+	%h	小时 (01-12)
+	%I	小时 (01-12)
+	%i	分钟，数值(00-59)
+	%j	年的天 (001-366)
+	%k	小时 (0-23)
+	%l	小时 (1-12)
+	%M	月名
+	%m	月，数值(00-12)
+	%p	AM 或 PM
+	%r	时间，12-小时（hh:mm:ss AM 或 PM）
+	%S	秒(00-59)
+	%s	秒(00-59)
+	%T	时间, 24-小时 (hh:mm:ss)
+	%U	周 (00-53) 星期日是一周的第一天
+	%u	周 (00-53) 星期一是一周的第一天
+	%V	周 (01-53) 星期日是一周的第一天，与 %X 使用
+	%v	周 (01-53) 星期一是一周的第一天，与 %x 使用
+	%W	星期名
+	%w	周的天 （0=星期日, 6=星期六）
+	%X	年，其中的星期日是周的第一天，4 位，与 %V 使用
+	%x	年，其中的星期一是周的第一天，4 位，与 %v 使用
+	%Y	年，4 位
+	%y	年，2 位
+
+-- EXISTS和IN区别
+	EXISTS与IN的使用效率的问题，通常情况下采用exists要比in效率高，因为IN不走索引，但要看实际情况具体使用：
+IN适合于外表大而内表小的情况；EXISTS适合于外表小而内表大的情况。
+
+-- 存储过程书写
+	DROP PROCEDURE IF EXISTS `init_auth`;
+	-- 开始定义
+	DELIMITER ;;
+	CREATE DEFINER=`root`@`%` PROCEDURE `init_auth`(IN a VARCHAR(255))
+	BEGIN
+		-- 定义变量
+		DECLARE pro_id VARCHAR(255);
+		DECLARE prom_id INT;
+		DECLARE ns_id INT;
+		DECLARE fl_id INT;
+
+		-- 设置变量
+		SET pro_id = (SELECT id FROM ctrlproject.t_project_template WHERE merchant_id = a);
+		IF pro_id IS NOT NULL then
+			DELETE FROM ctrlproject.t_project_menu WHERE project_id = pro_id; 
+		END IF;
+
+		SET prom_id = (SELECT id FROM ctrlproject.t_program WHERE merchant_id = a);
+		IF prom_id IS NOT NULL then
+			DELETE FROM ctrlproject.t_program_permission WHERE program_id = prom_id; 
+		END IF;
+
+		SET prom_id = (SELECT id FROM ctrlproject.t_program WHERE merchant_id = a);
+		IF prom_id IS NOT NULL then
+			DELETE FROM ctrlproject.t_member WHERE program_id = prom_id; 
+		END IF;
+
+		SET ns_id = (SELECT id FROM ctrldoc.t_doc_namespace WHERE merchant_id = a);
+		IF ns_id IS NOT NULL then
+			DELETE FROM ctrldoc.t_doc_namespace_role_setting WHERE namespace_id = ns_id; 
+		END IF;
+
+		SET fl_id = (SELECT COUNT(id) FROM ctrldoc.t_doc_file WHERE merchant_id = a);
+		IF fl_id != 0 then
+			DELETE FROM ctrldoc.t_doc_file_tag WHERE file_id IN (SELECT id FROM ctrldoc.t_doc_file WHERE merchant_id = a); 
+		END IF;
+		
+		DELETE FROM authcenter.t_auth WHERE merchant_id = a;
+		DELETE FROM ctrlproject.t_employee WHERE merchant_id = a;
+		DELETE FROM ctrlproject.t_merchant WHERE id = a;
+		DELETE FROM ctrloperation.t_employee_product WHERE merchant_id = a;
+		DELETE FROM ctrloperation.t_order WHERE merchant_id = a;
+		DELETE FROM ctrloperation.t_order_detail WHERE merchant_id = a;
+		DELETE FROM ctrlproject.t_task_template WHERE merchant_id = a;
+		DELETE FROM ctrlproject.t_project_template WHERE merchant_id = a;
+		DELETE FROM ctrlproject.t_task_category WHERE merchant_id = a;
+		DELETE FROM ctrlproject.t_program WHERE merchant_id = a;
+		DELETE FROM ctrldoc.t_doc_namespace WHERE merchant_id = a;
+		DELETE FROM ctrldoc.t_doc_member WHERE merchant_id = a;
+		DELETE FROM ctrldoc.t_doc_tag WHERE merchant_id = a;
+		DELETE FROM ctrldoc.t_doc_tag_category WHERE merchant_id = a;
+		DELETE FROM ctrldoc.t_doc_file WHERE merchant_id = a;
+		DELETE FROM ctrldoc.t_doc_folder WHERE merchant_id = a;
+	END
+	;;
+	DELIMITER ;

@@ -1,0 +1,121 @@
+scp ycthr@172.16.16.230:~
+ssh ycthr@172.16.16.230
+YCT$QWE1POI2
+
+-- 雅玛多服务器
+IP: 172.16.16.230
+用户名: ycthr/root
+密码: YCT$QWE1POI2/YCT$HR1704
+
+-- Pulse Secure
+※类型：SRX
+※名称：YCT-SKC-IDC
+※服务器URL：114.80.227.214
+伽然-HR使用：
+账户：yct_hr
+密码：yct$qwe1poi2
+
+-- 雅玛多客户内网Oracle正式数据库 172.16.16.220
+实例: YCT
+用户名: YCTHR 
+密码: yamatoYCT
+
+-- 雅玛多客户内网Oracle测试数据库 222.73.197.126
+实例: YCTTEST
+用户名: YCTTEST
+密码: YAMATOYCT
+
+-- 伽然Jenkins
+http://121.40.102.225/jenkins/login?from=/jenkins/
+用户名: jenkins
+密码: Glanway2015Jenkins
+
+-- 伽然121服务器(wildfly@121.40.102.225)
+IP: 121.40.102.225
+账户: wildfly
+密码: wildfly@glanway2018
+Glanway2015Aliyun!123
+
+-- 伽然118服务器(glanway@118.31.52.248)
+IP: 118.31.52.248
+账户: glanway
+密码: Glanway2018
+GlanwayP@ssw0rd2018
+deploy@118.31.52.248/deploy@glanway
+mysql@118.31.52.248/mysql@glanway
+
+vi ~/.m2/settings.xml  -- jenkins配置
+将server片段,copy一份 修改ID，账号密码
+
+-- 伽然222 window服务器
+IP: 222.73.176.40:6789
+账户: administrator
+密码: P@ssw0rd--!@#$%^
+
+-- 伽然112 window服务器
+IP: 112.124.123.60
+账户: administrator
+密码: 
+fadsiuohlgewRP(*TIUGO*^RYUFJVO*&RO*&TIUG75eE&^RYUFU&^ERO*LIU[]l
+';2fewp89y21!@$RFDSVCX
+
+-- 德智福 登陆跳板机
+IP: 120.27.237.182
+用户: root
+密码: qaz!@#6yhnm,./
+...跳到服务器
+ssh root@172.16.2.3
+
+-- 秉匠科技 windows服务器
+虚拟主机登录说明：
+登录地址：180.169.42.126:12889
+用户名：bingjiang
+密码：Iamfine2
+此为应用服务器,内网地址 10.101.1.128
+此服务器内可以用远程桌面连接另一台服务器，用作数据服务器
+远程地址：10.101.1.129
+用户名：bingjiang
+密码：Iamfine2
+管理员: weiw1495 密码: flzx3000FEET
+
+伽然短信
+key：3SDK-JRX-0130-RITUL
+秘钥：D1C3CCA229BE9E37 
+密钥格式：【企业签名】尊敬的领导，“***”项目中您有一条编号为“***”，标题为“***”的**记录需要审批，请及时处理。
+	【伽然科技】我们的可以这样填。
+接口地址：http://shmtn.b2m.cn:80/inter/sendSingleSMS
+
+chenmin@glanway.com
+sonia1986
+
+12523194@qq.com
+Glanway2015
+
+yum load-transaction /tmp/yum_save_tx.2017-05-26.16-24.QBd4Kw.yumtx
+
+1. 将 lombok.jar 复制到 myeclipse.ini / eclipse.ini 所在的文件夹目录下
+2. 打开 eclipse.ini / myeclipse.ini，在最后面插入以下两行并保存：
+	-Xbootclasspath/a:lombok.jar
+	-javaagent:lombok.jar
+3.重启 eclipse / myeclipse
+
+idea 只要找 Lombok 插件装下就行了
+
+elasticsearch
+
+http://www.cnblogs.com/xrq730/p/4823684.html // XML文件解析
+
+-- https://bwh1.net
+74.82.195.127
+28255
+fUamjEXkLjkk
+
+阿里云shell密码: 655478
+
+
+单位名称：伽然信息科技（上海）有限公司	
+纳税人识别码：91310106093587372Q
+注册地址：上海市虹口区海宁路137号7层（集中登记地）
+注册电话：021-63536318
+开户银行：中国建设银行股份有限公司上海丽都支行	
+银行账户：31001653208050010406
