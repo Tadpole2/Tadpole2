@@ -1,0 +1,6 @@
+#!/bin/bash 
+#chkconfig: 2345 80 90
+#description:auto_run
+#redis start service
+
+/usr/local/bin/redis-server /etc/redis.conf

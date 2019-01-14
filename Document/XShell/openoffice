@@ -1,0 +1,6 @@
+#!/bin/bash 
+#chkconfig: 2345 80 90
+#description:auto_run
+#openoffice4 start service
+
+/opt/openoffice4/program/soffice -headless -accept="socket,host=127.0.0.1,port=9289;urp;" -nofirststartwizard &

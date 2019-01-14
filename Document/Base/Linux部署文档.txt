@@ -38,6 +38,12 @@ cp /etc/skel/.bash_profile /home/glanway
 cp /etc/skel/.bashrc /home/deploy
 cp /etc/skel/.bash_profile /home/deploy
 
+########## 添加服务 ##########
+# 添加服务
+chkconfig --add mysql 
+# 显示服务列表(3,4,5为on，如果不是执行 chkconfig --level 345 mysql on)
+chkconfig --list
+
 -- Java环境
 	mkdir -p /usr/local/src/java
 	cd /usr/local/src/java
@@ -103,6 +109,14 @@ cp /etc/skel/.bash_profile /home/deploy
 	vi /etc/redis.conf
 		# 守护进程修改如下，默认为no
 		daemonize yes
+		# 修改默认绑定ip，默认为127.0.0.1
+		bind 127.0.0.1
+		# 修改rdb文件存储位置（可以不修改），默认为dir ./
+		dir /usr/local/src/redis/
+		# 修改用户密码，默认为无
+		requirepass 密码
+		# 修改数据库初始化大小，默认为无
+		maxmemory 200mb
 	# 启动
 	redis-server /etc/redis.conf
 	# 测试
@@ -126,7 +140,21 @@ cp /etc/skel/.bash_profile /home/deploy
 	# 自启动，当前目录下nginx.sh文件 --> /etc/init.d/nginx，参考mysql自启动
 	
 	卸载, 删除目录即可
-
+	
+// BUG
+1、 ./configure: error: the HTTP rewrite module requires the PCRE library.
+You can either disable the module by using --without-http_rewrite_module
+option, or install the PCRE library into the system, or build the PCRE library
+statically from the source with nginx by using --with-pcre=<path> option.
+解决方案
+	yum -y install pcre-devel
+2、./configure: error: the HTTP gzip module requires the zlib library.
+You can either disable the module by using --without-http_gzip_module
+option, or install the zlib library into the system, or build the zlib library
+statically from the source with nginx by using --with-zlib=<path> option.
+解决方案
+	yum install -y zlib-devel
+	
 -- Mysql
 	# 添加用户组和用户，并修改密码
 	groupadd mysql
@@ -161,6 +189,8 @@ cp /etc/skel/.bash_profile /home/deploy
 			datadir=/usr/local/mysql/data
 			symbolic-links=0
 			character_set_server=utf8
+			bind-address=0.0.0.0
+			max_connections=1000
 			
 		[mysqld_safe]
 			default-character-set=utf8
@@ -244,6 +274,12 @@ FATAL ERROR: please install the following Perl modules before executing ./script
 	# 查看是否安装成功
 	cd /usr/local/src/ffmpeg/bin
 	./ffmpeg -version 
+	vim /etc/profile
+		#Set ffmpeg environment
+		FFMPEG_HOME=/usr/local/src/ffmpeg
+		PATH=$FFMPEG_HOME/bin:$PATH
+		export FFMPEG_HOME PATH
+	source /etc/profile
 
 // BUG
 ./ffmpeg: error while loading shared libraries: libavdevice.so.58: cannot open shared object file: No such file or directory
@@ -271,3 +307,12 @@ FATAL ERROR: please install the following Perl modules before executing ./script
 	./configure --prefix=/usr/local/src/mplayer --codecsdir=/usr/local/src/mplayer/codecs
 	make # 编译非常久
 	make install
+	# 查看是否安装成功
+	cd /usr/local/src/mplayer/bin
+	./mplayer -v
+	vim /etc/profile
+		#Set mplayer environment
+		MPLAYER_HOME=/usr/local/src/mplayer
+		PATH=$MPLAYER_HOME/bin:$PATH
+		export MPLAYER_HOME PATH
+	source /etc/profile
