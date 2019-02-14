@@ -1,0 +1,174 @@
+--------------  webpack  --------------
+-- webpack-ES6的处理
+* es6模块，vue本身默认支持es6的模块导入导出
+* babel
+  - babel-loader（内部依赖babel-core）
+    + 关键字（presets es2015）
+    + 函数（plugins babel-plugin-transform-runtime）
+	
+--------------  ES6  --------------
+-- ES6中的模块
+** 模块导入导出，import和 export 一定写在顶级，不要包含在{}内
+* 默认导出（常用）
+  var temp = '我是默认导出结果'；
+  export default temp;
+* 导入方式
+  import temp from './cal.js';
+
+* 声明式导出
+  export var obj1 = '我是声明式导出1'
+  export var obj2 = '我是声明式导出1'
+  export var obj3 = '我是声明式导出1'
+* 导入方式
+  import {obj1, obj2} from './cal.js';
+
+* 另一种声明式导出(先声明，再导出)
+  var obj4 = '我是声明式导出4'；
+  export {obj4};
+* 导入方式
+  import {obj1, obj2, obj4} from './cal.js';
+
+* 全体导入
+  import * as obj from './cal.js'
+  导入的全体对象
+    {
+      default: {add: ƒ}
+      obj1: "我是声明式导出1"
+      obj2: "我是声明式导出2"
+      obj3: "我是声明式导出3"
+      __esModule: true
+    }
+
+* 总结：默认导出和声明式导出区别
+  声明式导入的时候，必须{名称}名称要一致（按需导入）
+  默认导入，可以随意的使用变量名
+  声明式导入不能包含在函数内部，只能在最外层作用域 import和 export
+
+-- ES6中的代码变化
+* 变量简写
+  var name = 'abc';
+  var person = {name}; 简写 -> var person = {name: name};
+  当属性的key和变量的名相同，而要使用变量的值做value，就可以简写{name}
+
+* 声明函数，干掉 :function
+  var cal = {
+    add:function(){
+      return 1;
+    },
+    add2(){
+      return 2;
+    },
+    add3:function(n1, n2){
+      return n1 + n2;
+    },
+    add4(n1, n2){// 干掉 :function
+      return n1 + n2;
+    }
+  }
+
+--------------  VUE  --------------
+-- vue单文件方式
+* 单文件就是*.vue结尾的文件。最终通过webpack也会编译成*.js在浏览器运行
+* 内容：<template></template> + <script></script> + <style></style>
+  1. template中只能有一个根节点 2.x
+  2. script中按照 export default {配置} 来写
+  3. style中可以设置scoped属性，让其只在template中生效
+
+-- 以单文件的方式启动
+* webpack找人来理解单文件代码
+  - vue-loader, vue-template-compiler, 代码中依赖vue
+
+* Vue-loader在15.x之后的版本都是 vue-loader的使用都是需要伴生 VueLoaderPlugin的 
+  const VueLoaderPlugin = require('vue-loader/lib/plugin');
+  new VueLoaderPlugin()
+  
+-- vue介绍（组件化）
+* 组件化，模块化 --> __细分代码__
+
+-- 双向数据流
+  1. js内存属性发生改变影响页面的变化
+  2. 页面的改变影响js内存属性的变化
+
+-- 指令
+* v-text
+  是元素的innerText 只能在双标签中使用
+* v-html
+  是元素的innerHtml 不能包含表达式{{xxx}}
+* v-if
+  是元素是否移除或者插入
+* v-show
+  是元素是否显示或者隐藏
+* v-model
+  双向数据绑定，内存改变影响页面，页面改变影响内存
+* v-bind
+  单向数据绑定，内存改变影响页面 
+* v-on
+  绑定事件
+* v-for
+  循环集合里的数据 
+
+-- v-bind
+v-bind:属性名称="表达式"，表达式最终运算的结果赋值给该属性
+  - 简化写法是：`:属性名="表达式"`
+* class：结果分类
+  - 一个样式：返回字符串（三元表达式或key和样式的清单对象）
+  - 多个样式：返回对象（样式做key，true或者false做值）
+
+-- v-on
+v-on:事件名="表达式||函数名"
+  - 简化写法是：`@:事件名="表达式||函数名"`
+* 函数名如果没有参数，可以省略（），只给一个函数名
+* 在 export default这个对象的根属性加 methods属性，其是一个对象
+  - key 是函数名，value 是函数体
+* 在 export default这个对象的根属性加 data属性，其是一个函数，返回一个对象
+  - 对象的属性是我们初始化的变量的名称
+* 凡是在template中使用变量或者函数，不需要加 this
+* 凡是在script中使用变量或者函数就需要加上 this
+
+-- v-for
+* 可以操作数据（item，index）
+* 可以操作对象（value，key，index）
+  - key 是类似 trank by 的一个属性
+  为了告诉vue，js中的元素与页面之间的关联，当试图删除元素的时候，是单个元素的删除而不是正版替换，所以需要关联其关系，设置（必须，性能） 2.xxx必须设置
+
+-- 父子组件
+* 使用者就是父组件
+* 被用者就是子组件
+  父组件需要声明子组件，引入子组件对象，声明方式如下：
+  ---- JavaScript ----
+    // 引入
+    import 子组件对象 from 'vue文件路径';
+
+    export default {
+      // 声明
+      components: {
+        组件名: 子组件对象
+      }
+    }
+  --------
+  全局组件：为了使用方便，在main.js中引入一次，在mian.js中使用 "Vue.component('组件名',组件对象);"，其余就都可以使用了
+  父组件传值给子组件，父组件中使用子组件添加属性传值，子组件使用props接收
+
+-- 组件通信（vuebus）
+* 通过new Vue() 创建一个对象（vuebus），
+* 一个组件中引入这个vuebus对象，该对象.$on('事件名', function(prop1, prop2){})来监听
+* 另一个组件引入同一个vuebus对象，该对象.$emit('事件名', prop1, prop2)来传递
+
+-- VUE的文档总结
+* 全局代表 Vue.
+* 实例代表 this. 或 new Vue() 
+* 选项代表 new Vue() 里的参数 或 export default里的属性
+
+-- 过滤器（组件内过滤器优先全局）
+* 组件内过滤器
+  - 选项中的属性filters，这是一个对象
+* 全局过滤器
+  - 实例的实现，Vue.(名, function(){})
+  例：输入内容反转（content | 过滤器）
+
+-- 获取DOM元素
+* 前端框架就是为了减少DOM操作，但是特定情况，也能够操作
+* 在指定的元素上，添加属性 ref='名称'
+* 在获取的地方加入 this.$refs.名称
+  - 如果ref放在了原生DOM元素上，获取的数据就是原生DOM对象
+  - 如果ref放在了组件对象上，获取的就是组件对象
