@@ -2,6 +2,7 @@
 man more/less/tail		:帮助(外国版)
 指令 --help				:帮助(中国版)
 yum						:在线安装
+yum install -y unzip zip:在线安装unzip
 rz						:上传
 sz						:下载
 scp						:远程上传
@@ -9,6 +10,7 @@ scp						:远程上传
 ./nginx -s stop			:停止服务
 df -lh					:硬盘存储
 du -h --max-depth=1		:查询文件夹大小
+du -sh *				:查询文件夹大小，仅以大小显示
 
 ===== 安装方式 =====
 源码安装				:编译后 执行make install命令安装
@@ -55,10 +57,13 @@ rm -rf /*				:系统自杀(不可操作)
 ===== cp复制文件命令 =====
 cp 文件a 文件b			:将文件a复制为文件b,需要指定源文件名和目标文件名或目录
 cp 文件 ../				:将文件复制到上一层目录中
+-n, 	--no-clobber	:不要覆盖已存在的文件(使前面的 -i 选项失效)
+-R, -r, --recursive		:递归复制目录及其子目录内的所有内容
+-p						:与文件的属性一起复制，而非使用默认属性
 
 ===== mv移动文件命令 =====
 mv 文件 ../				:将文件移动到上一层目录中
-mv 文件a 文件b			将a文件重命名为b文件
+mv 文件a 文件b			:将a文件重命名为b文件
 
 ===== 软连接 =====
 ln -s 源文件 目标文件	:建立软连接
@@ -507,3 +512,6 @@ ps -ef|grep nginx	查询进程,有两个进程即可(成功)
 
 在 Linux 上可用以下语句看了一下服务器的TCP状态(连接状态数量统计): 
 netstat -n | awk '/^tcp/ {++S[$NF]} END {for(a in S) print a, S[a]}' 
+
+-- 启动war
+/opt/jdk/bin/java -Dcom.sun.akuma.Daemon=daemonized -Djava.awt.headless=true -DJENKINS_HOME=/var/lib/jenkins -jar /usr/lib/jenkins/jenkins.war --logfile=/var/log/jenkins/jenkins.log --webroot=/var/cache/jenkins/war --daemon --httpPort=8080 --debug=5 --handlerCountMax=100 --handlerCountMaxIdle=20 &
