@@ -14,6 +14,27 @@ mongorestore -h <hostname><:port> -d dbname <path>
 	--dir：指定备份的目录 
 	注意事项：不能同时指定 <path> 和 --dir 选项
 	
+-- 导出表
+mongoexport --collection ctrlcontract-dev --db contractVersionDO --out ../backup/contractVersionDO.json
+--host ：要导出数据库 ip
+--port ：要导出的实例节点端口号
+--username ：数据库用户名
+--password ：数据库用户密码
+--collection ：要导出的表名
+--db ：要导出的表所在数据库名
+--out ：要导出的文件路径(默认为当前文件夹)
+
+-- 导入表
+mongoimport --collection ctrlcontract-dev --db bak-contractVersionDO --file ../backup/contractVersionDO.json
+-- host ：要导入的数据库 ip
+--port ：要导入的实例节点端口号
+--username ：数据库用户名
+--password ：数据库用户密码
+--collection ：要导入的表名
+--db ：要导入的表所在数据库名
+--file ：要导入的源文件路径(默认为当前文件夹
+
+	
 -- 查询批量更新
 db.getCollection('financeSalesPaybackRecordDO').find({'paybackAmount':{$type:2,$ne:"0"}}).forEach(function(x){
 	x.paybackAmount = NumberLong(x.paybackAmount) * 100;

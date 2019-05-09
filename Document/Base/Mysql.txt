@@ -170,3 +170,8 @@ IN适合于外表大而内表小的情况；EXISTS适合于外表小而内表大
 	END
 	;;
 	DELIMITER ;
+	
+-- BUG
+1. lost connection to MySQL server at "waiting for initial communication packet"
+在my.conf 文件中添加以下
+	在mysqld下添加skip-name-resolve
