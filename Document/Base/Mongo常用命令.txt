@@ -13,9 +13,10 @@ mongorestore -h <hostname><:port> -d dbname <path>
 	--drop：恢复的时候，先删除当前数据，然后恢复备份的数据。就是说，恢复后，备份后添加修改的数据都会被删除，慎用
 	--dir：指定备份的目录 
 	注意事项：不能同时指定 <path> 和 --dir 选项
+	例：mongorestore -h 127.0.0.1:27017 -d ctrlcrm ~/test
 	
 -- 导出表
-mongoexport --collection ctrlcontract-dev --db contractVersionDO --out ../backup/contractVersionDO.json
+mongoexport --db ctrlcontract-dev --collection contractVersionDO --out ../backup/contractVersionDO.json
 --host ：要导出数据库 ip
 --port ：要导出的实例节点端口号
 --username ：数据库用户名
@@ -25,7 +26,7 @@ mongoexport --collection ctrlcontract-dev --db contractVersionDO --out ../backup
 --out ：要导出的文件路径(默认为当前文件夹)
 
 -- 导入表
-mongoimport --collection ctrlcontract-dev --db bak-contractVersionDO --file ../backup/contractVersionDO.json
+mongoimport --db ctrlcontract-dev --collection bak-contractVersionDO --file ../backup/contractVersionDO.json
 -- host ：要导入的数据库 ip
 --port ：要导入的实例节点端口号
 --username ：数据库用户名
@@ -39,6 +40,18 @@ mongoimport --collection ctrlcontract-dev --db bak-contractVersionDO --file ../b
 db.getCollection('financeSalesPaybackRecordDO').find({'paybackAmount':{$type:2,$ne:"0"}}).forEach(function(x){
 	x.paybackAmount = NumberLong(x.paybackAmount) * 100;
 	db.getCollection('financeSalesPaybackRecordDO').save(x);
+})
+
+-- 递归批量更新
+db.getCollection('contractFormDO').find({"rows.columns.dataSource":"/api/sys/dictionary/list?code=BUSINESS_TYPE"}).forEach(function(x){
+    x.rows.forEach(function(row, rowIndex){
+        row.columns.forEach(function(column, columnIndex){
+            if(column && column.dataSource && column.dataSource == '/api/sys/dictionary/list?code=BUSINESS_TYPE'){
+                x.rows[rowIndex].columns[columnIndex].dataSource = '/api/contract/sys/dictionary/list?code=BUSINESS_TYPE';
+                db.getCollection('contractFormDO').save(x);
+            }
+        })
+    })
 })
 
 -- 更新
@@ -75,3 +88,20 @@ Timestamp				17				“timestamp”
 Decimal128				19				“decimal”				New in version 3.4.
 Min key					-1				“minKey”	
 Max key					127				“maxKey”
+
+-- 正则查询
+// 查询包含'为'字的数据
+db.product1.find({"name":{$regex:/为/}})
+db.product1.find({"name":{$regex:"为"}})
+db.product1.find({"name":/为/})
+// 查询包含中文的数据
+db.product1.find({"name":{$regex:"[\u4e00-\u9fa5]"}})
+// 查询不包含中文的数据
+db.product1.find({"name":{$not:{$regex:"[\u4e00-\u9fa5]"}}})
+// 查询中包含数字
+db.product1.find({"name":{$regex:"\\d"}})
+db.product1.find({"name":{$regex:"[0-9]"}})
+// 只包含字母的数据，^取反的意思（用特殊的转义字符需要在前面加一个斜杠）
+db.product1.find({"name":{$not:{$regex:"[^a-zA-z\\s]"}}})
+// 只包含汉字的数据，可包含空格
+db.product1.find({"name":{$not:{$regex:"[^\\s\u4e00-\u9fa5]"}}})

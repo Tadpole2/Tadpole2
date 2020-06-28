@@ -1,0 +1,46 @@
+{
+    "workbench.colorTheme": "One Dark Pro Bold",
+    "editor.fontSize": 18,
+    "editor.wordWrap": "bounded",
+    "workbench.startupEditor": "newUntitledFile",
+    "workbench.statusBar.feedback.visible": false,
+    "editor.minimap.enabled": false,
+    "workbench.iconTheme": "vscode-icons",
+    "vsicons.dontShowNewVersionMessage": true,
+    "editor.tabSize": 2,
+    "*.vue": "vue",
+    "eslint.autoFixOnSave": true,
+    "eslint.options": {
+        "extensions": [
+            ".js",
+            ".vue"
+        ]
+    },
+    "eslint.validate": [
+        "javascript",{
+            "language": "vue",
+            "autoFix": true
+        },"html",
+        "vue"
+    ],
+    "search.exclude": {
+        "**/dist": true
+    },
+    "emmet.syntaxProfiles": {
+        "javascript": "jsx",
+        "vue": "html",
+        "vue-html": "html"
+    },
+    "git.confirmSync": false,
+    "window.zoomLevel": 0,
+    "editor.renderWhitespace": "boundary",
+    "editor.cursorBlinking": "smooth",
+    "editor.minimap.enabled": true,
+    "editor.minimap.renderCharacters": false,
+    "window.title": "${dirty}${activeEditorMedium}${separator}${rootName}",
+    "editor.codeLens": true,
+    "editor.snippetSuggestions": "top",
+    "git.autofetch": true,
+    "breadcrumbs.enabled": false,
+    "workbench.panel.defaultLocation": "right"
+}

@@ -1,0 +1,33 @@
+{
+    "emmet.syntaxProfiles": {
+        "vue-html": "html",
+        "vue": "html"
+    },
+    "git.ignoreMissingGitWarning": true,
+    "extensions.ignoreRecommendations": true,
+    "window.zoomLevel": 0,
+    "workbench.iconTheme": "vscode-icons",
+    "workbench.startupEditor": "newUntitledFile",
+    "workbench.colorTheme": "One Monokai",
+    "editor.fontSize": 18,
+    "editor.minimap.enabled": false,
+    "editor.wordWrap": "on",
+    "editor.fontFamily": "Consolas, monospace, 'Courier New'",
+    "vetur.format.defaultFormatter.html": "js-beautify-html",
+    "eslint.alwaysShowStatus": true,
+	"eslint.validate": [
+		"Javascript",
+		"Javascriptreact",
+		"html",
+		{"language":"vue","autoFix": true}
+	],
+	"eslint.options": {
+		"plugins": ["html"]
+	},
+    "prettier.singleQuote": true,
+    "prettier.semi": false,
+    "eslint.autoFixOnSave": true,
+    "explorer.confirmDelete": false,
+    "editor.tabSize": 2,
+    "json.format.enable": true
+}

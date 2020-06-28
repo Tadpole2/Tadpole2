@@ -1,0 +1,28 @@
+public String getIpAddr(HttpServletRequest request) { 
+   String ip = request.getHeader("x-forwarded-for"); 
+   if(ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) { 
+	   ip = request.getHeader("Proxy-Client-IP"); 
+   } 
+   if(ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) { 
+	   ip = request.getHeader("WL-Proxy-Client-IP"); 
+   } 
+   if(ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) { 
+	   ip = request.getRemoteAddr(); 
+   } 
+   return ip; 
+}
+
+@Autowired
+private RestTemplate restTemplate;
+
+@Test
+public void ipAddress() {
+	// 新浪查询失败查询阿里
+	String address = restTemplate.getForObject("http://whois.pconline.com.cn/ipJson.jsp?ip=121.40.102.225",
+			String.class);
+	String address2 = restTemplate.getForObject("http://whois.pconline.com.cn/ip.jsp?ip=121.40.102.225",
+			String.class);
+	System.out.println(address);
+	System.out.println(address2);
+
+}

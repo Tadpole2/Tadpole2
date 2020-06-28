@@ -76,3 +76,6 @@ netstat -nao | findstr 端口号	-- 查询端口号
               显示空白。
   /4          用四位数字显示年
 dir /b/s *.jpg > a.txt	-- 将某个目录下的jpg文件路径写道某个文件中
+dir /b/s /a:-D | find /v /c "" -- 递归查询目录下文件的个数
+	/s 递归
+	/a:-D 除去文件夹

@@ -104,6 +104,7 @@ less					:和more相似,但less可使用PgUp、PgOn键来控制
 tail					:显示文件后几行的内容(可指定)
 
 ===== 定时任务 =====
+yum install crontabs	:安装定时任务
 crond 是linux下用来周期性的执行某种任务或等待处理某些事件的一个守护进程
 crontab命令详解
 -u user	:用来设定某个用户的crontab服务
