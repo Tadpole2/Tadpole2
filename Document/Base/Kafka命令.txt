@@ -1,0 +1,24 @@
+-- Zookeeper安装
+下载解压
+
+-- Kafka安装
+下载解压
+
+***** Kafka命令 *****
+-- 创建话题
+./kafka-topics.sh --create --zookeeper 127.0.0.1:2181/kafka --replication-factor 1 --partitions 1 --topic topicName
+ 
+-- 查看话题
+./kafka-topics.sh --zookeeper 127.0.0.1:2181/kafka --list
+
+-- 删除话题
+Kafka配置server.properties 设置 delete.topic.enable=true才能彻底删除
+./kafka-topics.sh --delete --zookeeper 127.0.0.1:2181/kafka --topic topicName
+
+-- 生产者(发送消息)
+./kafka-console-producer.sh --broker-list 127.0.0.1:9092 --topic topicName
+ 
+-- 消费者(接受消息)
+./kafka-console-consumer.sh --zookeeper 127.0.0.1:2181/kafka --topic topicName
+ 
+

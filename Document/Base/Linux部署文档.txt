@@ -128,7 +128,7 @@ chkconfig --list
 	rz nginx-1.7.7.tar.gz
 	tar -xvf nginx-1.7.7.tar.gz
 	cd nginx-1.7.7
-	./configure --prefix=/usr/local/src/nginx --with-http_slice_module --user=root --group=root
+	./configure --prefix=/usr/local/src/nginx --with-http_slice_module --with-http_stub_status_module --with-http_ssl_module --user=root --group=root
 	make  
 	make install
 	# 运行
@@ -316,3 +316,15 @@ FATAL ERROR: please install the following Perl modules before executing ./script
 		PATH=$MPLAYER_HOME/bin:$PATH
 		export MPLAYER_HOME PATH
 	source /etc/profile
+	
+-- 安装Docker
+	# 云安装
+	yum -y install docker
+	# 启动
+	systemctl start docker
+	
+	
+jstack -l pid > jstack.log
+jmap -dump:format=b,file=dump.hprof pid
+执行命令把pid替换
+	

@@ -1,0 +1,32 @@
+-- VMware workstation安装
+通过以下链接下载安装文件workstation pro，然后通过提示自主安装
+https://www.vmware.com/cn/products/workstation-pro/workstation-pro-evaluation.html
+
+-- centos下载
+通过以下链接下载安装文件centos
+http://isoredirect.centos.org/centos/8/isos/x86_64/
+
+-- 虚拟机安装
+按提示下一步即可
+
+-- VMware Tools安装
+tar -zxvf ...tar.gz -C /user
+
+-- 设置网络
+子网IP：192.168.157.0
+子网掩码：255.255.255.0
+网关IP：192.168.157.2
+
+vi /etc/sysconfig/network-scripts/ifcfg-ens33
+	BOOTPROTO=static
+	IPADDR=192.168.157.3
+	NETMASK=255.255.255.0
+	GATEWAY=192.168.157.2
+	ONBOOT=yes
+vi /etc/resolv.conf
+	nameserver 192.168.157.2
+vi /etc/sysconfig/network
+	NETWORKING=yes
+	HOSTNAME=hadoop01
+vi /etc/sysconfig/network
+	hadoop01

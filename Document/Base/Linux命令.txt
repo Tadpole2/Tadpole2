@@ -450,6 +450,7 @@ find ./ -size +10c							:查找文件size大于10个字节的文件或目录
 find ./ -size -10k							:查找文件size小于10k的文件或目录
 find ./ -size -10M							:查找文件size小于10M的文件或目录
 find ./ -size -10G							:查找文件size小于10G的文件或目录
+find . -name '.svn' -type d | xargs rm -rf	:查找文件夹.svn进行递归删除
 
 //***Linux下安装nginx***//
 -- 第一步: 在线安装Nginx的依赖(命令如下)
@@ -480,9 +481,13 @@ find ./ -size -10G							:查找文件size小于10G的文件或目录
 	防火墙打开80端口
 	service iptables stop //关闭防火墙(一般不这样做)
 
+	## 方法一
 	/sbin/iptables -I INPUT -p tcp --dport 80 -j ACCEPT	// 添加端口号到防火墙
 	/etc/rc.d/init.d/iptables save	// 保存配置
 	/etc/init.d/iptables status
+	## 方法二
+	vim /etc/sysconfig/iptables
+	-A INPUT -m state --state NEW -m tcp -p tcp --dport 9289 -j ACCEPT
 	
 -- 切换用户
 	cd /ucenter/	// 此时用户是root,要进行切换
@@ -516,3 +521,13 @@ netstat -n | awk '/^tcp/ {++S[$NF]} END {for(a in S) print a, S[a]}'
 
 -- 启动war
 /opt/jdk/bin/java -Dcom.sun.akuma.Daemon=daemonized -Djava.awt.headless=true -DJENKINS_HOME=/var/lib/jenkins -jar /usr/lib/jenkins/jenkins.war --logfile=/var/log/jenkins/jenkins.log --webroot=/var/cache/jenkins/war --daemon --httpPort=8080 --debug=5 --handlerCountMax=100 --handlerCountMaxIdle=20 &
+
+
+-- 修改服务器最大链接数
+ulimit -a	查看当前进程最大链接数max user processes
+永久修改最大链接数，修改后需要重启服务器
+vim /etc/security/limits.conf
+ root soft nofile 65535	#root用户访问最大链接数
+ root hard nofile 65535	#root用户访问最大链接数
+ * soft nofile 65535	#任何用户访问最大链接数
+ * hard nofile 65535	#任何用户访问最大链接数
