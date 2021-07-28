@@ -11,6 +11,7 @@ scp						:远程上传
 df -lh					:硬盘存储
 du -h --max-depth=1		:查询文件夹大小
 du -sh *				:查询文件夹大小，仅以大小显示
+yum search				:搜索
 
 ===== 安装方式 =====
 源码安装				:编译后 执行make install命令安装
@@ -531,3 +532,5 @@ vim /etc/security/limits.conf
  root hard nofile 65535	#root用户访问最大链接数
  * soft nofile 65535	#任何用户访问最大链接数
  * hard nofile 65535	#任何用户访问最大链接数
+ 
+iftop -P	查看网络链接信息

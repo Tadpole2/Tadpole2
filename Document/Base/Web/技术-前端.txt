@@ -41,3 +41,10 @@ npm init -y				--> 生成package.json
 npm i 					--> 恢复package.json中 devDependencies, dependencies
 npm i --production		--> 恢复package.json中 dependencies
 . /node_modules/.bin/webpack-dev-server --inline --hot -- open	-->热启动
+
+
+执行 npm install stylus-loader css-loader style-loader --save-dev 安装依赖就行。
+
+执行 npm install less less-loader --save-dev 安装依赖就行。
+
+执行 npm install sass sass-loader --save-dev 安装依赖就行。或者（$npm intall sass-loader --save ; $npm install node-sass --save）

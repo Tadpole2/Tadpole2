@@ -154,6 +154,12 @@ option, or install the zlib library into the system, or build the zlib library
 statically from the source with nginx by using --with-zlib=<path> option.
 解决方案
 	yum install -y zlib-devel
+3、./configure: error: SSL modules require the OpenSSL library.
+You can either do not enable the modules, or install the OpenSSL library
+into the system, or build the OpenSSL library statically from the source
+with nginx by using --with-openssl=<path> option.
+解决方案
+	yum -y install openssl openssl-devel
 	
 -- Mysql
 	# 添加用户组和用户，并修改密码
@@ -253,7 +259,7 @@ FATAL ERROR: please install the following Perl modules before executing ./script
 	tar -xvf yasm-1.3.0.tar.gz
 	cd yasm-1.3.0
 	./configure --prefix=/usr/local/src/ffmpeg/yasm
-	make  
+	make
 	make install
 	vim /etc/profile
 		#Set yasm environment
@@ -326,5 +332,10 @@ FATAL ERROR: please install the following Perl modules before executing ./script
 	
 jstack -l pid > jstack.log
 jmap -dump:format=b,file=dump.hprof pid
+jmap -dump:format=b,file=gaedump.hprof 7306
 执行命令把pid替换
+
+
+sh zookeeper-server-start.sh start
+sh kafka-server-start.sh ../config/server.properties &
 	
